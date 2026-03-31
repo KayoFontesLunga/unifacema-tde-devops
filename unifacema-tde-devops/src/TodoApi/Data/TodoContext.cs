@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TodoApi.Models;
+using unifacema_tde_devops.src.TodoApi.Models;
 
 namespace TodoApi.Data
 {

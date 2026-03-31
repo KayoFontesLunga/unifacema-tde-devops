@@ -1,4 +1,4 @@
-﻿namespace TodoApi.Models
+﻿namespace unifacema_tde_devops.src.TodoApi.Models
 {
     public class TodoItem
     {

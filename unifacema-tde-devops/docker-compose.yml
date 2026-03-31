@@ -31,8 +31,9 @@ services:
       - POSTGRES_DB=tododb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata # <-- NOVO: Define o subdiretório correto
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data # <-- Montamos na pasta pai
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d tododb"]
       interval: 10s

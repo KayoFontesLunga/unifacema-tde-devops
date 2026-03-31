@@ -24,11 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include=".github\workflows\" />
-    <Folder Include="src\TodoApi\Controllers\" />
-    <Folder Include="src\TodoApi\Data\" />
-    <Folder Include="src\TodoApi\Models\" />
-    <Folder Include="src\TodoApi\Migrations\" />
+    <None Include=".github\workflows\main.yml" />
   </ItemGroup>
 
 </Project>

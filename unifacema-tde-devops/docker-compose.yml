@@ -14,8 +14,8 @@ services:
 
   api:
     build:
-      context: ./src/TodoApi
-      dockerfile: Dockerfile
+      context: . # O ponto (.) indica que o Docker deve olhar a pasta atual
+      dockerfile: Dockerfile # O nome exato do arquivo (D maiúsculo)
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=db;Database=tododb;Username=postgres;Password=postgres

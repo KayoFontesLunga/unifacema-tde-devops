@@ -15,11 +15,10 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+ app.UseSwagger();
+ app.UseSwaggerUI();
+
 
 // Removido o UseHttpsRedirection para facilitar o teste em container
 // app.UseHttpsRedirection();

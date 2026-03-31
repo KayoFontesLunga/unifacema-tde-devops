@@ -1,29 +1,30 @@
-# Acesse https://aka.ms/customizecontainer para saber como personalizar seu contêiner de depuração e como o Visual Studio usa este Dockerfile para criar suas imagens para uma depuração mais rápida.
-
-# Esta fase é usada durante a execução no VS no modo rápido (Padrão para a configuração de Depuração)
+# Estágio de Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-
-# Esta fase é usada para compilar o projeto de serviço
+# Estágio de Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["unifacema-tde-devops/unifacema-tde-devops.csproj", "unifacema-tde-devops/"]
-RUN dotnet restore "./unifacema-tde-devops/unifacema-tde-devops.csproj"
-COPY . .
-WORKDIR "/src/unifacema-tde-devops"
-RUN dotnet build "./unifacema-tde-devops.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# Esta fase é usada para publicar o projeto de serviço a ser copiado para a fase final
+# COPIAR O PROJETO (Ajustado para a pasta atual)
+# Como você já está na pasta do projeto, copiamos o .csproj diretamente
+COPY ["unifacema-tde-devops.csproj", "./"]
+RUN dotnet restore "unifacema-tde-devops.csproj"
+
+# COPIAR TUDO E COMPILAR
+COPY . .
+RUN dotnet build "unifacema-tde-devops.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# PUBLICAR
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./unifacema-tde-devops.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "unifacema-tde-devops.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Esta fase é usada na produção ou quando executada no VS no modo normal (padrão quando não está usando a configuração de Depuração)
+# FINAL
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

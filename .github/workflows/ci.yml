@@ -33,19 +33,19 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    # 1. Restore: Usando curingas (**) para o GitHub achar o arquivo em qualquer subpasta
+    # 1. Restore: Usando curingas para achar todos os projetos (API e Testes)
     - name: Restore dependencies
-      run: dotnet restore **/unifacema-tde-devops.csproj
+      run: dotnet restore
 
-    # 2. Build
+    # 2. Build: Compila a solução inteira de uma vez
     - name: Build
-      run: dotnet build **/unifacema-tde-devops.csproj --no-restore
+      run: dotnet build --no-restore
 
-    # 3. Test: Apontando para a pasta que vi na sua imagem
+    # 3. Test: O segredo é remover o --no-build para ele garantir que tudo está pronto
     - name: Test
-      run: dotnet test TodoApi.Tests/TodoApi.Tests.csproj --no-build --verbosity normal
+      run: dotnet test --verbosity normal
 
-    # 4. Docker Build: O segredo está no -f para indicar onde está o Dockerfile
+    # 4. Docker Build: Mantendo o caminho que funcionou para o seu Dockerfile
     - name: Build Docker Image
       run: |
         docker build -t todo-api:latest -f unifacema-tde-devops/Dockerfile .

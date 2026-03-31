@@ -1,4 +1,4 @@
-﻿name: DevOps CI/CD Workflow
+﻿name: CI
 
 on:
   push:
@@ -33,19 +33,18 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
+    # Ajustado para o seu caminho real: unifacema-tde-devops/unifacema-tde-devops.csproj
     - name: Restore dependencies
-      run: dotnet restore src/TodoApi/TodoApi.csproj
+      run: dotnet restore unifacema-tde-devops/unifacema-tde-devops.csproj
 
     - name: Build
-      run: dotnet build src/TodoApi/TodoApi.csproj --no-restore
+      run: dotnet build unifacema-tde-devops/unifacema-tde-devops.csproj --no-restore
 
+    # Se você tiver o projeto de testes na raiz ou em outra pasta, ajuste aqui:
     - name: Test
-      run: dotnet test src/TodoApi/TodoApi.csproj --no-build --verbosity normal
+      run: dotnet test TodoApi.Tests/TodoApi.Tests.csproj --no-build --verbosity normal
 
     - name: Build Docker Image
       run: |
-        docker build -t todo-api:latest ./src/TodoApi
-        docker build -t todo-nginx:latest -f - . <<EOF
-        FROM nginx:latest
-        COPY nginx.conf /etc/nginx/nginx.conf
-        EOF
+        # O Dockerfile está dentro da subpasta unifacema-tde-devops/
+        docker build -t todo-api:latest ./unifacema-tde-devops

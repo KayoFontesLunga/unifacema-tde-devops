@@ -1,0 +1,51 @@
+﻿name: DevOps CI/CD Workflow
+
+on:
+  push:
+    branches: [ "master", "develop" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: tododb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore src/TodoApi/TodoApi.csproj
+
+    - name: Build
+      run: dotnet build src/TodoApi/TodoApi.csproj --no-restore
+
+    - name: Test
+      run: dotnet test src/TodoApi/TodoApi.csproj --no-build --verbosity normal
+
+    - name: Build Docker Image
+      run: |
+        docker build -t todo-api:latest ./src/TodoApi
+        docker build -t todo-nginx:latest -f - . <<EOF
+        FROM nginx:latest
+        COPY nginx.conf /etc/nginx/nginx.conf
+        EOF

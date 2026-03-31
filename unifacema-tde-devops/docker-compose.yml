@@ -1,5 +1,6 @@
-﻿services:
-  # Servidor Web (Nginx) - Atua como Proxy Reverso
+﻿version: '3.8'
+
+services:
   web:
     image: nginx:latest
     ports:
@@ -11,7 +12,6 @@
     networks:
       - todo-network
 
-  # API ASP.NET Core
   api:
     build:
       context: ./src/TodoApi
@@ -25,7 +25,6 @@
     networks:
       - todo-network
 
-  # Banco de Dados PostgreSQL
   db:
     image: postgres:latest
     environment:

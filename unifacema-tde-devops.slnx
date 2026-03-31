@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="TodoApi.Tests/TodoApi.Tests.csproj" Id="e72f7eb0-cb07-4819-b040-3426dba690d4" />
   <Project Path="unifacema-tde-devops/unifacema-tde-devops.csproj" />
 </Solution>

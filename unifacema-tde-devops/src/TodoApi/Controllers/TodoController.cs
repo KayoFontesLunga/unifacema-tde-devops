@@ -1,20 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Data;
-using TodoApi.Models;
+using unifacema_tde_devops.src.TodoApi.Models;
 
-namespace TodoApi.Controllers
+namespace unifacema_tde_devops.src.TodoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TodoController : ControllerBase
+    public class TodoController(TodoContext context) : ControllerBase
     {
-        private readonly TodoContext _context;
-
-        public TodoController(TodoContext context)
-        {
-            _context = context;
-        }
+        private readonly TodoContext _context = context;
 
         // GET: api/Todo
         [HttpGet]

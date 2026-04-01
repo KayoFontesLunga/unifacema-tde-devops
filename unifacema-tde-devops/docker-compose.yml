@@ -14,8 +14,8 @@ services:
 
   api:
     build:
-      context: ./src/TodoApi
-      dockerfile: Dockerfile
+      context: . # O ponto (.) indica que o Docker deve olhar a pasta atual
+      dockerfile: Dockerfile # O nome exato do arquivo (D maiúsculo)
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=db;Database=tododb;Username=postgres;Password=postgres
@@ -31,8 +31,9 @@ services:
       - POSTGRES_DB=tododb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata # <-- NOVO: Define o subdiretório correto
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data # <-- Montamos na pasta pai
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d tododb"]
       interval: 10s

@@ -48,4 +48,4 @@ jobs:
     # 4. Docker Build: Mantendo o caminho que funcionou para o seu Dockerfile
     - name: Build Docker Image
       run: |
-        docker build -t todo-api:latest -f unifacema-tde-devops/Dockerfile .
+        docker build -t todo-api:latest ./unifacema-tde-devops
